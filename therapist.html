@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Therapist Dashboard — RehabTrack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <nav class="sidebar" aria-label="Main navigation">
+    <a class="brand dashboard-brand" href="therapist.html"><span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-heart-pulse"></i></span><span class="brand-name"> RehabTrack</span></a>
+    <p class="role-label">Healthcare Worker</p>
+    <ul class="nav-list">
+      <li><a href="#dashboard" data-view="dashboard" aria-current="page"><span class="icon" aria-hidden="true"><i class="fa-solid fa-house"></i></span> Dashboard</a></li>
+      <li><a href="#patients" data-view="patients"><span class="icon" aria-hidden="true"><i class="fa-solid fa-users"></i></span> Patients</a></li>
+      <li><a href="#exercises" data-view="exercises"><span class="icon" aria-hidden="true"><i class="fa-solid fa-person-walking"></i></span> Exercises</a></li>
+      <li><a href="#plans" data-view="plans"><span class="icon" aria-hidden="true"><i class="fa-solid fa-clipboard-list"></i></span> Rehabilitation Plans</a></li>
+      <li><a href="#progress" data-view="progress"><span class="icon" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span> Progress</a></li>
+      <li><a href="#notifications" data-view="notifications"><span class="icon" aria-hidden="true"><i class="fa-regular fa-bell"></i></span> Notifications</a></li>
+      <li><a href="#profile" data-view="profile"><span class="icon" aria-hidden="true"><i class="fa-regular fa-user"></i></span> Profile</a></li>
+    </ul>
+    <button class="btn btn--ghost btn--block" id="logoutBtn">Log Out</button>
+  </nav>
+
+  <div class="main-content">
+    <div class="container" style="padding:0;">
+
+      <div class="topbar">
+        <div>
+          <h1 id="greeting" style="margin-bottom:0;">Hello</h1>
+          <p style="color:var(--color-text-muted);">Here's what's happening with your patients today.</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="notifBell" aria-label="Notifications" data-view="notifications">
+            <i class="fa-regular fa-bell" aria-hidden="true"></i><span class="badge hidden" id="notifBadge">0</span>
+          </button>
+          <div class="profile-chip">
+            <span class="avatar" id="avatarInitial">T</span>
+            <span id="profileName">Therapist</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ DASHBOARD VIEW ============ -->
+      <section id="view-dashboard" class="view">
+        <div class="card-grid section">
+          <div class="stat-card"><span class="stat-value" id="statPatients">0</span><span class="stat-label">Total Patients</span></div>
+          <div class="stat-card"><span class="stat-value" id="statActivePlans">0</span><span class="stat-label">Active Rehabilitation Plans</span></div>
+          <div class="stat-card"><span class="stat-value" id="statCompletedToday">0</span><span class="stat-label">Completed Today</span></div>
+          <div class="stat-card"><span class="stat-value" id="statMissed">0</span><span class="stat-label">Missed Activities</span></div>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>Your Patients</h2></div>
+          <div class="table-wrap card" style="padding:0;">
+            <table class="data-table" id="dashboardPatientsTable">
+              <thead><tr><th>Patient</th><th>Status</th><th>Completion</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PATIENTS VIEW ============ -->
+      <section id="view-patients" class="view hidden">
+        <div class="section-header">
+          <div><h2>Patients</h2><p>Manage the people in your care.</p></div>
+          <button class="btn btn--primary" id="addPatientBtn">+ Add Patient</button>
+        </div>
+        <div class="table-wrap card" style="padding:0;">
+          <table class="data-table" id="patientsTable">
+            <thead><tr><th>Name</th><th>Age</th><th>Caregiver</th><th>Status</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ EXERCISES VIEW ============ -->
+      <section id="view-exercises" class="view hidden">
+        <div class="section-header">
+          <div><h2>Exercises</h2><p>The exercise library you can assign to patients.</p></div>
+          <button class="btn btn--primary" id="addExerciseBtn">+ Add Exercise</button>
+        </div>
+        <div class="card-grid" id="exercisesLibraryList"></div>
+      </section>
+
+      <!-- ============ PLANS VIEW ============ -->
+      <section id="view-plans" class="view hidden">
+        <div class="section-header">
+          <div><h2>Rehabilitation Plans</h2><p>Assign exercises to patients with a schedule.</p></div>
+          <button class="btn btn--primary" id="createPlanBtn">+ Create Plan</button>
+        </div>
+        <div class="table-wrap card" style="padding:0;">
+          <table class="data-table" id="plansTable">
+            <thead><tr><th>Patient</th><th>Exercise</th><th>Schedule</th><th>Time</th><th>Status</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ PROGRESS VIEW ============ -->
+      <section id="view-progress" class="view hidden">
+        <div class="section-header">
+          <div><h2>Patient Progress</h2></div>
+          <div class="form-field" style="margin:0; min-width:220px;">
+            <select id="progressPatientSelect"><option value="">Select a patient...</option></select>
+          </div>
+        </div>
+        <div id="progressPatientDetail">
+          <div class="empty-state">
+            <p class="empty-state__title">Select a patient to view progress.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ NOTIFICATIONS VIEW ============ -->
+      <section id="view-notifications" class="view hidden">
+        <div class="section-header"><h2>Notifications</h2></div>
+        <div class="card" style="padding:0;">
+          <ul class="notification-list" id="notificationsList"></ul>
+        </div>
+      </section>
+
+      <!-- ============ PROFILE VIEW ============ -->
+      <section id="view-profile" class="view hidden">
+        <div class="section-header"><h2>Profile</h2></div>
+        <div class="card stack" id="profileCard"></div>
+      </section>
+
+      <p class="disclaimer disclaimer-footer">RehabTrack is a rehabilitation monitoring and record-keeping tool. It does not provide medical diagnosis or replace professional medical advice. Rehabilitation plans remain the responsibility of the assigned healthcare worker.</p>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="Mobile navigation">
+  <ul>
+    <li><a href="#dashboard" data-view="dashboard" aria-current="page"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Home</span></a></li>
+    <li><a href="#patients" data-view="patients"><i class="fa-solid fa-users" aria-hidden="true"></i><span>Patients</span></a></li>
+    <li><a href="#plans" data-view="plans"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i><span>Plans</span></a></li>
+    <li><a href="#progress" data-view="progress"><i class="fa-solid fa-chart-line" aria-hidden="true"></i><span>Progress</span></a></li>
+    <li><a href="#notifications" data-view="notifications"><i class="fa-regular fa-bell" aria-hidden="true"></i><span>Alerts</span></a></li>
+  </ul>
+</nav>
+
+<!-- Generic modal used for add/edit patient, exercise, and the plan wizard -->
+<div id="modalBackdrop" class="modal-backdrop hidden">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+      <h3 id="modalTitle">Title</h3>
+      <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="js/therapist.js"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+/* ============================================================
+   dashboard.css — Patient/Caregiver and Therapist dashboards
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Sidebar navigation
+   ------------------------------------------------------------ */
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #E9F6FF 0%, #F8FCFF 55%, #E1F3FF 100%);
+  border-right: 1px solid #A8D5F0;
+  padding: var(--space-4) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.sidebar .brand { margin-bottom: var(--space-2); color: var(--color-primary-dark); font-size: 1.45rem; font-weight: 800; }
+.dashboard-brand {
+  margin-bottom: var(--space-3) !important;
+  text-decoration: none;
+}
+.dashboard-brand:hover, .dashboard-brand:focus, .dashboard-brand:visited { text-decoration: none; }
+.sidebar .brand-mark { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); box-shadow: 0 4px 10px rgba(10, 74, 122, 0.2); }
+.brand-name { color: var(--color-primary-dark); font-size: 1.28rem; letter-spacing: -0.035em; }
+.sidebar .role-label {
+  color: var(--color-primary-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 var(--space-4) 2.7rem;
+}
+.nav-list { list-style: none; margin: 0; padding: 0; flex: 1; }
+.nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.75rem 0.8rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 600;
+  min-height: 44px;
+}
+.nav-list a:hover { background: #FFFFFF; color: var(--color-primary-dark); box-shadow: var(--shadow-card); }
+.nav-list a[aria-current="page"] {
+  background: var(--color-primary-dark);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(10, 74, 122, 0.2);
+}
+.nav-list .icon { width: 20px; text-align: center; }
+.nav-list .icon i { width: 1em; }
+
+/* Mobile: bottom nav */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  z-index: 100;
+}
+.bottom-nav ul { list-style: none; display: flex; margin: 0; padding: 0.3rem; }
+.bottom-nav a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+.bottom-nav a[aria-current="page"] { color: var(--color-primary); font-weight: 700; }
+.bottom-nav a > i { font-size: 1rem; height: 1.15rem; }
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .bottom-nav { display: block; }
+  .main-content { padding-bottom: 5rem; }
+}
+
+/* ------------------------------------------------------------
+   Top bar
+   ------------------------------------------------------------ */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+.topbar-actions { display: flex; align-items: center; gap: var(--space-2); }
+
+.icon-btn {
+  position: relative;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 0;
+  background: var(--color-surface);
+  cursor: pointer;
+  font-size: 1.1rem;
+  box-shadow: 0 3px 10px rgba(10, 74, 122, 0.1);
+}
+.icon-btn:hover { background: var(--color-primary-tint); box-shadow: 0 5px 14px rgba(10, 74, 122, 0.16); }
+.icon-btn .badge {
+  position: absolute;
+  top: -2px; right: -2px;
+  background: var(--color-warning);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  min-width: 18px; height: 18px;
+  border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 3px;
+}
+
+.profile-chip {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.35rem 0.7rem 0.35rem 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-primary-tint);
+}
+.profile-chip .avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--color-primary-dark);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------
+   Progress bar
+   ------------------------------------------------------------ */
+
+.progress-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+.progress-bar__fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 999px;
+  transition: width 300ms ease;
+}
+
+/* Simple weekly bar chart (no external library needed) */
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+  height: 140px;
+  padding-top: var(--space-2);
+}
+.bar-chart .bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  gap: 0.3rem;
+}
+.bar-chart .bar {
+  width: 100%;
+  max-width: 28px;
+  border-radius: 6px 6px 0 0;
+  background: var(--color-primary);
+}
+.bar-chart .bar--missed { background: var(--color-warning); }
+.bar-chart .bar-label { font-size: 0.72rem; color: var(--color-text-muted); }
+.bar-chart .bar-stack { display: flex; flex-direction: column-reverse; width: 100%; align-items: center; }
+
+/* ------------------------------------------------------------
+   Condition / history list
+   ------------------------------------------------------------ */
+
+.history-list { list-style: none; margin: 0; padding: 0; }
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.history-item:last-child { border-bottom: none; }
+.history-item .emoji { font-size: 1.5rem; }
+.history-item .meta { color: var(--color-text-muted); font-size: 0.85rem; }
+
+/* ------------------------------------------------------------
+   Notification panel
+   ------------------------------------------------------------ */
+
+.notification-list { list-style: none; margin: 0; padding: 0; }
+.notification-item {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+.notification-item:last-child { border-bottom: none; }
+.notification-item.unread { background: var(--color-primary-tint); border-radius: var(--radius-sm); }
+.notification-item .n-icon { font-size: 1.3rem; }
+.notification-item .n-time { font-size: 0.8rem; color: var(--color-text-muted); }
+
+/* ------------------------------------------------------------
+   Tables (therapist patient/exercise lists)
+   ------------------------------------------------------------ */
+
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th, .data-table td {
+  text-align: left;
+  padding: 0.8rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.95rem;
+}
+.data-table th { color: var(--color-text-muted); font-weight: 600; font-size: 0.85rem; }
+.data-table thead { background: var(--color-primary-tint); }
+.data-table tbody tr:hover { background: #F2F9FF; }
+.data-table tr:last-child td { border-bottom: none; }
+.table-actions { display: flex; gap: 0.4rem; }
+.table-wrap { overflow-x: auto; }
+
+/* ------------------------------------------------------------
+   Modal
+   ------------------------------------------------------------ */
+
+/* Dashboard pages do not load auth.css, where this utility is also used. */
+.hidden { display: none !important; }
+
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(19, 33, 30, 0.45);
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-3);
+  z-index: 150;
+}
+.modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #A8D5F0;
+  box-shadow: 0 18px 48px rgba(10, 74, 122, 0.24);
+}
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: var(--space-3);
+}
+.modal-close {
+  background: none; border: none; font-size: 1.4rem;
+  cursor: pointer; color: var(--color-text-muted);
+  width: 40px; height: 40px; border-radius: 50%;
+}
+.modal-close:hover { background: var(--color-primary-tint); }
+
+/* ------------------------------------------------------------
+   Wizard (rehabilitation plan creation)
+   ------------------------------------------------------------ */
+
+.wizard-steps {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+.wizard-step {
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.wizard-step.active { background: var(--color-primary); color: #fff; }
+.wizard-step.done { background: var(--color-success-tint); color: var(--color-success); }
+
+.disclaimer-footer {
+  margin-top: var(--space-5);
+}

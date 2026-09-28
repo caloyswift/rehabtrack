@@ -1,0 +1,16 @@
+// Local activity, condition-log, and progress helpers.
+import { STORAGE_KEYS, getData, setData, createId, nowISO } from "./storage.js";
+import { validateFields, formatDateISO, calcCompletionRate } from "./utils.js";
+
+export async function recordActivity(data) {
+  const errors = validateFields(data, { completedRepetitions: { nonNegative: true, label: "Repetitions completed" }, completedDuration: { nonNegative: true, label: "Duration completed" } });
+  if (data.status === "completed" && !data.difficulty) errors.push("Please select how difficult the exercise was."); if (errors.length) throw new Error(errors[0]);
+  const records = getData(STORAGE_KEYS.records), id = createId(); records.push({ id, patientId: data.patientId, exerciseId: data.exerciseId, planId: data.planId || null, date: formatDateISO(), timestamp: nowISO(), targetRepetitions: Number(data.targetRepetitions) || 0, completedRepetitions: data.status === "missed" ? 0 : Number(data.completedRepetitions) || 0, targetDuration: Number(data.targetDuration) || 0, completedDuration: data.status === "missed" ? 0 : Number(data.completedDuration) || 0, difficulty: data.status === "missed" ? null : data.difficulty, status: data.status, recordedBy: data.recordedBy }); setData(STORAGE_KEYS.records, records); return id;
+}
+export async function getRecordsForPatientToday(patientId) { const date = formatDateISO(); return getData(STORAGE_KEYS.records).filter((r) => r.patientId === patientId && r.date === date); }
+export async function getRecordHistoryForPatient(patientId, limitDays = 30) { return getData(STORAGE_KEYS.records).filter((r) => r.patientId === patientId).sort((a, b) => b.date.localeCompare(a.date) || String(b.timestamp).localeCompare(String(a.timestamp))).slice(0, limitDays * 5); }
+export async function recordConditionLog({ patientId, exerciseId, condition, note, recordedBy }) { if (!condition) throw new Error("Please select how the patient felt today."); const logs = getData(STORAGE_KEYS.conditionLogs), id = createId(); logs.push({ id, patientId, exerciseId: exerciseId || null, date: formatDateISO(), timestamp: nowISO(), condition, note: note?.trim() || "", recordedBy }); setData(STORAGE_KEYS.conditionLogs, logs); return id; }
+export async function getConditionLogsForPatient(patientId, limitCount = 20) { return getData(STORAGE_KEYS.conditionLogs).filter((l) => l.patientId === patientId).sort((a, b) => b.date.localeCompare(a.date) || String(b.timestamp).localeCompare(String(a.timestamp))).slice(0, limitCount); }
+export function computeProgressStats(records) { const assigned = records.length, completed = records.filter((r) => r.status === "completed").length, missed = records.filter((r) => r.status === "missed").length; return { assigned, completed, missed, completionRate: calcCompletionRate(completed, assigned) }; }
+export function filterToCurrentWeek(records) { const now = new Date(), start = new Date(now); start.setDate(now.getDate() - now.getDay()); start.setHours(0, 0, 0, 0); return records.filter((r) => r.date >= formatDateISO(start)); }
+export function groupRecordsByDate(records) { return records.reduce((map, r) => { if (!map[r.date]) map[r.date] = { completed: 0, missed: 0 }; map[r.date][r.status === "completed" ? "completed" : "missed"] += 1; return map; }, {}); }

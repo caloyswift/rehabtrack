@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard — RehabTrack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- Sidebar (desktop) -->
+  <nav class="sidebar" aria-label="Main navigation">
+    <a class="brand dashboard-brand" href="patient.html"><span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-heart-pulse"></i></span><span class="brand-name"> RehabTrack</span></a>
+    <p class="role-label">Patient / Caregiver</p>
+    <ul class="nav-list">
+      <li><a href="#dashboard" data-view="dashboard" aria-current="page"><span class="icon" aria-hidden="true"><i class="fa-solid fa-house"></i></span> Dashboard</a></li>
+      <li><a href="#exercises" data-view="exercises"><span class="icon" aria-hidden="true"><i class="fa-solid fa-person-walking"></i></span> My Exercises</a></li>
+      <li><a href="#progress" data-view="progress"><span class="icon" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span> Progress</a></li>
+      <li><a href="#condition" data-view="condition"><span class="icon" aria-hidden="true"><i class="fa-solid fa-clipboard-check"></i></span> Condition History</a></li>
+      <li><a href="#notifications" data-view="notifications"><span class="icon" aria-hidden="true"><i class="fa-regular fa-bell"></i></span> Notifications</a></li>
+      <li><a href="#profile" data-view="profile"><span class="icon" aria-hidden="true"><i class="fa-regular fa-user"></i></span> Profile</a></li>
+    </ul>
+    <button class="btn btn--ghost btn--block" id="logoutBtn">Log Out</button>
+  </nav>
+
+  <div class="main-content">
+    <div class="container" style="padding:0;">
+
+      <div class="topbar">
+        <div>
+          <h1 id="greeting" style="margin-bottom:0;">Hello</h1>
+          <p id="todayDate" style="color:var(--color-text-muted);"></p>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="notifBell" aria-label="Notifications" data-view="notifications">
+            <i class="fa-regular fa-bell" aria-hidden="true"></i><span class="badge hidden" id="notifBadge">0</span>
+          </button>
+          <div class="profile-chip">
+            <span class="avatar" id="avatarInitial">P</span>
+            <span id="profileName">Patient</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ DASHBOARD VIEW ============ -->
+      <section id="view-dashboard" class="view">
+        <div class="section">
+          <div class="card-grid">
+            <div class="stat-card"><span class="stat-value" id="statToday">0</span><span class="stat-label">Today's Exercises</span></div>
+            <div class="stat-card"><span class="stat-value" id="statCompleted">0</span><span class="stat-label">Completed</span></div>
+            <div class="stat-card"><span class="stat-value" id="statRemaining">0</span><span class="stat-label">Remaining</span></div>
+            <div class="stat-card"><span class="stat-value" id="statWeekly">0%</span><span class="stat-label">Weekly Progress</span></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h2>Today's Rehabilitation</h2>
+          </div>
+          <div class="card-grid" id="todayExercisesList">
+            <div class="loading-state"><div class="spinner"></div><p>Loading today's exercises...</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ MY EXERCISES VIEW ============ -->
+      <section id="view-exercises" class="view hidden">
+        <div class="section-header"><h2>My Exercises</h2><p>Everything currently assigned to your rehabilitation plan.</p></div>
+        <div class="card-grid" id="allExercisesList">
+          <div class="loading-state"><div class="spinner"></div><p>Loading your exercises...</p></div>
+        </div>
+      </section>
+
+      <!-- ============ PROGRESS VIEW ============ -->
+      <section id="view-progress" class="view hidden">
+        <div class="section-header"><h2>Your Progress</h2></div>
+        <div class="card-grid section">
+          <div class="stat-card"><span class="stat-value" id="progAssigned">0</span><span class="stat-label">Assigned Exercises</span></div>
+          <div class="stat-card"><span class="stat-value" id="progCompleted">0</span><span class="stat-label">Completed</span></div>
+          <div class="stat-card"><span class="stat-value" id="progMissed">0</span><span class="stat-label">Missed</span></div>
+          <div class="stat-card"><span class="stat-value" id="progRate">0%</span><span class="stat-label">Completion Rate</span></div>
+        </div>
+        <div class="card section">
+          <h3>This Week</h3>
+          <div class="bar-chart" id="weeklyChart"></div>
+        </div>
+        <div class="card">
+          <h3>Recent Activity</h3>
+          <ul class="history-list" id="recentActivityList"></ul>
+        </div>
+      </section>
+
+      <!-- ============ CONDITION HISTORY VIEW ============ -->
+      <section id="view-condition" class="view hidden">
+        <div class="section-header"><h2>Condition History</h2><p>How the patient has felt after recent sessions.</p></div>
+        <div class="card">
+          <ul class="history-list" id="conditionHistoryList"></ul>
+        </div>
+      </section>
+
+      <!-- ============ NOTIFICATIONS VIEW ============ -->
+      <section id="view-notifications" class="view hidden">
+        <div class="section-header"><h2>Notifications</h2></div>
+        <div class="card" style="padding:0;">
+          <ul class="notification-list" id="notificationsList"></ul>
+        </div>
+      </section>
+
+      <!-- ============ PROFILE VIEW ============ -->
+      <section id="view-profile" class="view hidden">
+        <div class="section-header"><h2>Profile</h2></div>
+        <div class="card stack" id="profileCard"></div>
+      </section>
+
+      <p class="disclaimer disclaimer-footer">RehabTrack is a rehabilitation monitoring and record-keeping tool. It does not provide medical diagnosis or replace professional medical advice.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom nav (mobile) -->
+<nav class="bottom-nav" aria-label="Mobile navigation">
+  <ul>
+    <li><a href="#dashboard" data-view="dashboard" aria-current="page"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Home</span></a></li>
+    <li><a href="#exercises" data-view="exercises"><i class="fa-solid fa-person-walking" aria-hidden="true"></i><span>Exercises</span></a></li>
+    <li><a href="#progress" data-view="progress"><i class="fa-solid fa-chart-line" aria-hidden="true"></i><span>Progress</span></a></li>
+    <li><a href="#condition" data-view="condition"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i><span>Condition</span></a></li>
+    <li><a href="#notifications" data-view="notifications"><i class="fa-regular fa-bell" aria-hidden="true"></i><span>Alerts</span></a></li>
+  </ul>
+</nav>
+
+<!-- Exercise detail / record activity modal -->
+<div id="exerciseModal" class="modal-backdrop hidden">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="exerciseModalTitle">
+    <div class="modal-header">
+      <h3 id="exerciseModalTitle">Exercise</h3>
+      <button class="modal-close" id="closeExerciseModal" aria-label="Close">&times;</button>
+    </div>
+    <div id="exerciseModalBody"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="js/patient.js"></script>
+</body>
+</html>
