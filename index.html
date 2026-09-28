@@ -13,17 +13,19 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <header class="site-header">
   <a class="brand" href="index.html">
     <span class="brand-mark" aria-hidden="true">R</span>
     RehabTrack
   </a>
-  <div class="row">
+  <nav aria-label="Main navigation" class="row">
     <a class="btn btn--ghost" href="login.html">Login</a>
-  </div>
+  </nav>
 </header>
 
-<main>
+<main id="main-content" tabindex="-1">
   <section class="hero">
     <div class="hero-copy">
       <h1>Rehabilitation monitoring made simpler.</h1>
@@ -37,9 +39,10 @@
         <img class="hero-image" src="assets/images/hero.jpg" alt="Caregiver supporting a patient through a rehabilitation exercise" />
       </div>
     </div>
-  </section><br><br>
+  </section>
 
-  <section class="benefits">
+  <section class="benefits" aria-labelledby="benefits-heading">
+    <h2 class="visually-hidden" id="benefits-heading">How RehabTrack helps</h2>
     <div class="benefit">
       <div class="benefit-heading">
         <span class="benefit-icon" aria-hidden="true">◫</span>
@@ -76,7 +79,7 @@
 </main>
 
 <footer class="site-footer">
-  &copy; 2026 RehabTrack. Built for care teams and the people they support.
+  <p>&copy; 2026 RehabTrack. Built for care teams and the people they support.</p>
 </footer>
 
 </body>
