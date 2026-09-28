@@ -46,8 +46,14 @@ export function initializeDemoData() {
   const createdAt = nowISO();
   if (localStorage.getItem(STORAGE_KEYS.users) === null) setData(STORAGE_KEYS.users, [
     { id: therapistId, userId: therapistId, name: "Demo Therapist", email: "therapist@rehabtrack.test", password: "therapist123", role: "therapist", patientId: null, createdAt, isDemo: true },
-    { id: "demo-patient-user", userId: "demo-patient-user", name: "Demo Patient", email: "patient@rehabtrack.test", password: "patient123", role: "patient", patientId, createdAt, isDemo: true }
+    { id: "demo-patient-user", userId: "demo-patient-user", name: "Demo Patient", email: "patient@rehabtrack.test", password: "patient456", role: "patient", patientId, createdAt, isDemo: true }
   ]);
+  const users = getData(STORAGE_KEYS.users);
+  const demoPatient = users.find((user) => user.isDemo && user.email === "patient@rehabtrack.test");
+  if (demoPatient?.password === "patient123") {
+    demoPatient.password = "patient456";
+    setData(STORAGE_KEYS.users, users);
+  }
   if (localStorage.getItem(STORAGE_KEYS.patients) === null) setData(STORAGE_KEYS.patients, [
     { id: patientId, patientId, name: "Demo Patient", age: 65, contact: "0917-000-0000", emergencyContact: "0917-111-1111", caregiverName: "Maria Dela Cruz", status: "active", therapistId, createdAt, isDemo: true }
   ]);

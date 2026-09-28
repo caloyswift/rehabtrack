@@ -9,7 +9,7 @@ Open `index.html` through a simple local development server (such as VS Code Liv
 | Role | Email | Password |
 | --- | --- | --- |
 | Healthcare Worker | `therapist@rehabtrack.test` | `therapist123` |
-| Patient | `patient@rehabtrack.test` | `patient123` |
+| Patient | `patient@rehabtrack.test` | `patient456` |
 
 Demo users, a linked patient, sample exercises, plans, and a welcome notification are added only when the relevant storage keys are missing. Existing local data is not overwritten.
 
