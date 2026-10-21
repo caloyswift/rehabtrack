@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+const APP_URL = "https://rehabtrack-navy.vercel.app";
+
 function Brand() {
   return <Link className="brand" href="/" aria-label="RehabTrack home"><span className="brand-mark" aria-hidden="true">R</span>RehabTrack</Link>;
 }
@@ -61,7 +63,7 @@ export default function LoginPage() {
 
       if (mode === "forgot") {
         const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/auth/callback?next=/auth/reset`,
+          redirectTo: `${APP_URL}/auth/callback?next=/auth/reset`,
         });
         if (resetError) throw resetError;
         setMessage("If an account exists for that email, a password reset link is on its way.");
@@ -79,7 +81,7 @@ export default function LoginPage() {
           password,
           options: {
             data: { full_name: fullName, role, ...(role === "patient" ? { patient_code: patientCode } : {}) },
-            emailRedirectTo: `${window.location.origin}/auth/callback?next=/${role}`,
+            emailRedirectTo: `${APP_URL}/auth/callback?next=/login`,
           },
         });
         if (signUpError) throw signUpError;
@@ -132,7 +134,7 @@ export default function LoginPage() {
       const { error: resendError } = await supabase.auth.resend({
         type: "signup",
         email: signupEmail,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=/${signupRole}` },
+        options: { emailRedirectTo: `${APP_URL}/auth/callback?next=/login` },
       });
       if (resendError) throw resendError;
       setMessage("If this account can receive a new confirmation link, it has been sent.");

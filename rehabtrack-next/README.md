@@ -8,7 +8,7 @@ This folder contains the Next.js rebuild of RehabTrack. The original HTML protot
 2. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in `.env.local` using the values from the Supabase project Connect panel. Do not put a service-role or secret key in a `NEXT_PUBLIC_` variable.
 3. Install the dependencies listed in `package.json` with `npm install`.
 4. Run the SQL files in `supabase/migrations/` in timestamp order in the Supabase SQL Editor. If the initial schema migration has already been applied, run only newer migrations that have not yet been applied.
-5. In Supabase Auth URL Configuration, set the local Site URL to `http://localhost:3000` and allow `http://localhost:3000/auth/callback` as a redirect URL.
+5. In Supabase Auth URL Configuration, set the Site URL to `https://rehabtrack-navy.vercel.app` and allow `https://rehabtrack-navy.vercel.app/auth/callback` as a redirect URL. Add `http://localhost:3000/auth/callback` too if you still test email links locally.
 6. Restart the Next.js development server after setting environment variables.
 
 There is no administrator account or administrator login in RehabTrack. During sign-up, users can choose Patient / Caregiver or Healthcare Worker. Healthcare-worker registration is self-declared and is not verified; anyone who selects it can access the therapist workspace. The Supabase project owner still manages the Supabase project itself.
